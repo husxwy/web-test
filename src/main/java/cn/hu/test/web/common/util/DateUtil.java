@@ -50,8 +50,9 @@ public class DateUtil {
     public static List<Date> getDateMenus() {
         List<Date> dates = new ArrayList<>();
         Date date = toDayStartHour(new Date());
-        for (int i = 0; i < 12; i++)
+        for (int i = 0; i < 12; i++) {
             dates.add(addDateHour(date, i * 2));
+        }
         Date now = new Date();
         for (Date cdate : dates) {
             if (cdate.getTime() <= now.getTime() && now.getTime() < addDateHour(cdate, 2).getTime()) {
@@ -60,8 +61,9 @@ public class DateUtil {
             }
         }
         List<Date> dateMenus = new ArrayList<>();
-        for (int j = 0; j < 5; j++)
+        for (int j = 0; j < 5; j++) {
             dateMenus.add(addDateHour(now, j * 2));
+        }
         return dateMenus;
     }
 

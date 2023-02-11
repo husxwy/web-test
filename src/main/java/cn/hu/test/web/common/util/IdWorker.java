@@ -39,22 +39,26 @@ public class IdWorker {
     }
 
     public IdWorker(long workerId, long datacenterId) {
-        if (workerId > 31L || workerId < 0L)
+        if (workerId > 31L || workerId < 0L) {
             throw new IllegalArgumentException(String.format("worker Id can't be greater than %d or less than 0", new Object[] { Long.valueOf(31L) }));
-        if (datacenterId > 31L || datacenterId < 0L)
+        }
+        if (datacenterId > 31L || datacenterId < 0L) {
             throw new IllegalArgumentException(String.format("datacenter Id can't be greater than %d or less than 0", new Object[] { Long.valueOf(31L) }));
+        }
         this.workerId = workerId;
         this.datacenterId = datacenterId;
     }
 
     public synchronized long nextId() {
         long timestamp = timeGen();
-        if (timestamp < lastTimestamp)
+        if (timestamp < lastTimestamp) {
             throw new RuntimeException(String.format("Clock moved backwards.  Refusing to generate id for %d milliseconds", new Object[] { Long.valueOf(lastTimestamp - timestamp) }));
+        }
         if (lastTimestamp == timestamp) {
             this.sequence = this.sequence + 1L & 0xFFFL;
-            if (this.sequence == 0L)
+            if (this.sequence == 0L) {
                 timestamp = tilNextMillis(lastTimestamp);
+            }
         } else {
             this.sequence = 0L;
         }
@@ -65,8 +69,9 @@ public class IdWorker {
 
     private long tilNextMillis(long lastTimestamp) {
         long timestamp = timeGen();
-        while (timestamp <= lastTimestamp)
+        while (timestamp <= lastTimestamp) {
             timestamp = timeGen();
+        }
         return timestamp;
     }
 
@@ -78,8 +83,9 @@ public class IdWorker {
         StringBuffer mpid = new StringBuffer();
         mpid.append(datacenterId);
         String name = ManagementFactory.getRuntimeMXBean().getName();
-        if (!name.isEmpty())
+        if (!name.isEmpty()) {
             mpid.append(name.split("@")[0]);
+        }
         return (mpid.toString().hashCode() & 0xFFFF) % (maxWorkerId + 1L);
     }
 
