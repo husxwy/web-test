@@ -8,11 +8,15 @@ import java.util.*;
 import java.util.concurrent.TimeUnit;
 
 @RestController
-@RequestMapping({"/test"})
-public class Test {
+@RequestMapping({"/testAll"})
+public class TestAllController {
     @GetMapping({"/get"})
     public Result get(@RequestHeader Map<String, String> headers) {
+        Date startTime = Calendar.getInstance().getTime();
+        String start = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", Locale.CHINA).format(startTime.getTime());
+
         HashMap hashMap = new HashMap();
+        hashMap.put("starTime",start);
         hashMap.put("headers",headers);
            return new Result(true, Integer.valueOf(20000), "查询成功",hashMap );
     }
@@ -22,7 +26,7 @@ public class Test {
     public Result delaySeconds(@RequestHeader Map<String, String> headers,@PathVariable long seconds) {
 
         Date startTime = Calendar.getInstance().getTime();
-        String star = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", Locale.CHINA).format(startTime.getTime());
+        String start = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", Locale.CHINA).format(startTime.getTime());
 
 
 
@@ -36,7 +40,7 @@ public class Test {
         String end =new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'",Locale.CHINA).format(endTime);
 
         HashMap hashMap = new HashMap();
-        hashMap.put("startTime",star);
+        hashMap.put("startTime",start);
         hashMap.put("endTime",end);
         hashMap.put("seconds",seconds);
         hashMap.put("headers",headers);
@@ -48,7 +52,7 @@ public class Test {
     public Result delayMillisecond(@RequestHeader Map<String, String> headers,@PathVariable long millisecond) {
 
         Date startTime = Calendar.getInstance().getTime();
-        String star = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", Locale.CHINA).format(startTime.getTime());
+        String start = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", Locale.CHINA).format(startTime.getTime());
 
         headers.forEach((key, value) -> {
 
@@ -64,14 +68,10 @@ public class Test {
         String end =new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'",Locale.CHINA).format(endTime);
 
         HashMap hashMap = new HashMap();
-        hashMap.put("startTime",star);
+        hashMap.put("startTime",start);
         hashMap.put("endTime",end);
         hashMap.put("millisecond",millisecond);
         hashMap.put("headers",headers);
-//        HashMap headersHashMap = new HashMap();
-//        headers.forEach((key, value) -> {
-//            headersHashMap
-//        });
 
         return new Result(true, Integer.valueOf(20000), "查询成功",hashMap );
     }
